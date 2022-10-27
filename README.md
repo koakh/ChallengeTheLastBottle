@@ -11,7 +11,7 @@
 ```shell
 $ cd someFolder
 $ git clone https://github.com/koakh/ChallengeTheLastBottle.git
-$ git switch developemnt
+$ git switch development
 $ cd ChallengeTheLastBottle
 ```
 
