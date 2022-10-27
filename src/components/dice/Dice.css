@@ -1,0 +1,34 @@
+.diceContainer {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+  border: 1px solid grey;
+  background-image: linear-gradient(rgb(180,180,220), rgb(220,220,255));
+}
+
+.diceContainer > div {
+  display: block;
+  height: 30px;
+  text-align: center;
+}
+
+.diceContainerLabel {
+  margin-top: 7px;
+  color: black;
+}
+
+.diceDirection {
+  width: 140px;
+}
+
+.diceSteps {
+  width: 85px;
+}
+
+.dice {
+  height: 30px;
+  margin: 0 10px;
+}
