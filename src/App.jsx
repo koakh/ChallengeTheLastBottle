@@ -168,8 +168,6 @@ const App = () => {
   const stateOutput = JSON.stringify(
     {
       ...state.gameStatus,
-      // rounds: undefined,
-      gpgpCenterPosition: undefined,
       gpgpAreaArray: undefined,
       pzAreaArray: undefined
     },

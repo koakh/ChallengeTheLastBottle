@@ -53,13 +53,13 @@ export const generateGameData = (columns, rows) => {
     turn: constants.PLASTIC_BOTTLE_ID,
     directionStatus: constants.DIRECTIONS[0],
     rounds: [],
+    rows: 0,
+    columns: 0,
     gpgpCenterPosition,
     // gpgpArea,
     // pzArea,
     gpgpAreaArray,
-    pzAreaArray,
-    rows: 0,
-    columns: 0
+    pzAreaArray
   };
 };
 
@@ -213,7 +213,7 @@ export const getMoveStepPositions = (
   columns,
   rows
 ) => {
-  const debug = false;
+  const debug = true;
   if (debug)
     log(
       `move ${roleStepsStatus} step(s) to direction ${directionStatus[0]} from current ${position} position`

@@ -1,7 +1,7 @@
 export const constants = {
-  DEBUG: false,
+  DEBUG: true,
   SHOW_GRID_POSITION: false,
-  MIN_GRID_SIZE: [7, 7],
+  MIN_GRID_SIZE: [10, 10],
   CELL_SIZE: [30, 30],
   PLAYER_ID: 'Henry',
   PLASTIC_BOTTLE_ID: 'Plastic Bottle',
