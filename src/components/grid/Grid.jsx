@@ -12,7 +12,7 @@ export default function Grid () {
   const running = state.gameStatus.running;
 
   const renderGrid = () => {
-    const removeHeight = 85;
+    const removeHeight = 124;
     const removeWidth = 10;
     const columns =
       Math.floor((window.innerWidth - removeWidth) / constants.CELL_SIZE[0]) -
@@ -20,8 +20,14 @@ export default function Grid () {
     const rows =
       Math.floor((window.innerHeight - removeHeight) / constants.CELL_SIZE[1]) -
       1;
-    setColumns(columns);
-    setRows(rows);
+    setColumns(
+      columns < constants.MIN_GRID_SIZE[0]
+        ? constants.MIN_GRID_SIZE[0]
+        : columns
+    );
+    setRows(
+      rows < constants.MIN_GRID_SIZE[1] ? constants.MIN_GRID_SIZE[1] : rows
+    );
     dispatch({
       type: 'SET_GRID',
       payload: {
@@ -53,9 +59,7 @@ export default function Grid () {
       <div className='columnLabel'>
         {columns > 0 &&
           [...Array(columns + 1).keys()].map((e, i) => (
-            <div key={i} style={{ borderBottom: i > 0 && '1px solid grey' }}>
-              {i > 0 ? `C${e}` : ''}
-            </div>
+            <div key={i}>{i > 0 ? `C${e}` : ''}</div>
           ))}
       </div>
 

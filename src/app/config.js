@@ -1,6 +1,7 @@
 export const constants = {
   DEBUG: false,
   SHOW_GRID_POSITION: false,
+  MIN_GRID_SIZE: [7, 7],
   CELL_SIZE: [30, 30],
   PLAYER_ID: 'Henry',
   PLASTIC_BOTTLE_ID: 'Plastic Bottle',
@@ -20,8 +21,8 @@ export const constants = {
     ['W', 'E'],
     ['NW', 'SE']
   ],
-  STEPS_TIME_INTERVAL: 250,
-  BOTTLE_THINK_INTERVAL: 25,
+  STEPS_TIME_INTERVAL: 500,
+  BOTTLE_THINK_INTERVAL: 1000,
   COLORS: {
     randomGpgpArea: [
       [220, 255],

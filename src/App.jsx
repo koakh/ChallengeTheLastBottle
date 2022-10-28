@@ -194,8 +194,8 @@ const App = () => {
 
   return (
     <div className='App'>
+      <div className='gameTitle'>{constants.I18N.gameName}</div>
       <div className='toolbar'>
-        <div className='gameTitle'>{constants.I18N.gameName}</div>
         {state.gameStatus.running ? (
           <>
             <button
