@@ -6,6 +6,7 @@ import { getDirection, getMoveStepPositions } from './app/game';
 import { useStateValue } from './app/state/useStateValue';
 import Dice from './components/dice/Dice';
 import Grid from './components/grid/Grid';
+import Legend from './components/legend/Legend';
 import { arrayIsInArray, log, randomNumber } from './utils/main';
 
 const App = () => {
@@ -248,6 +249,7 @@ const App = () => {
         )}
       </div>
       <Grid />
+      <Legend />
       {constants.DEBUG && <pre>state: {stateOutput}</pre>}
     </div>
   );

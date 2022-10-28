@@ -12,8 +12,8 @@ export default function Grid () {
   const running = state.gameStatus.running;
 
   const renderGrid = () => {
-    const removeHeight = 124;
-    const removeWidth = 10;
+    const removeHeight = 250;
+    const removeWidth = 20;
     const columns =
       Math.floor((window.innerWidth - removeWidth) / constants.CELL_SIZE[0]) -
       1;

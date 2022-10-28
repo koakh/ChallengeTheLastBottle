@@ -10,18 +10,23 @@ html,body {
 }
 
 .toolbar {  
+  margin: auto;
   display: flex;
   justify-content: center;
-  padding: 10px 10px 0px;
   height: 50px;
   font-size: 0.75em;
   color: black;
+  min-width: 800px;
+  max-width: 800px;
+  border: 1px solid #363636;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .gameTitle {
   font-size: 1.5em;
   color: white;
-  padding: 14px 10px 10px 0px;
+  margin: 10px;
 }
 
 .button {
@@ -32,6 +37,7 @@ html,body {
   height: 50px;
   color: black;
   background-color: #9c9c9c;
+  min-width: 80px;
   /* background-image: linear-gradient(rgb(120,120,220), rgb(180,180,255)); */
   /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
 }
@@ -51,7 +57,7 @@ html,body {
 
 .gameStatus {
   display: flex;
-  width: 300px;
+  width: 100%;
   justify-content: left;
   align-items: center;
   padding: 5px 10px;
