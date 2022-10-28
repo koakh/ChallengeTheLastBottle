@@ -24,7 +24,6 @@ const App = () => {
 
   // eventHandlers
   const onClickStartGameHandler = e => {
-    setTimeout(() => {});
     dispatch({
       type: 'START_GAME'
     });
