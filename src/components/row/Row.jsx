@@ -5,12 +5,12 @@ import Cell from '../cell/Cell';
 export default function Row ({ columnId, columns }) {
   return (
     <div className='row'>
-      {[...Array(columns + 1).keys()].map((e, i) => (
+      {Array.from(Array(columns + 1), (_, i) => (
         <div key={i}>
           {i === 0 ? (
             `R${columnId + 1}`
           ) : (
-            <Cell key={i} position={[e - 1, columnId]} />
+            <Cell key={i} position={[i - 1, columnId]} />
           )}
         </div>
       ))}

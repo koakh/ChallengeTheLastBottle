@@ -5,8 +5,8 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'standard',
     'plugin:react/jsx-runtime',
+    'standard',
     // leave in the end
     'prettier'
   ],

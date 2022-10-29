@@ -58,15 +58,15 @@ export default function Grid () {
     <div className='grid'>
       <div className='columnLabel'>
         {columns > 0 &&
-          [...Array(columns + 1).keys()].map((e, i) => (
-            <div key={i}>{i > 0 ? `C${e}` : ''}</div>
+          Array.from(Array(columns + 1), (_, i) => (
+            <div key={i}>{i > 0 ? `C${i}` : ''}</div>
           ))}
       </div>
 
       {rows > 0 &&
-        [...Array(rows).keys()].map((e, i) => (
+        Array.from(Array(rows), (_, i) => (
           <Row key={i} columnId={i} columns={columns}>
-            Row {e + 1}
+            Row {i + 1}
           </Row>
         ))}
     </div>
