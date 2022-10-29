@@ -17,18 +17,8 @@ export const generateGameData = (columns, rows) => {
   const gpgpCenterPosition = randomPosition(columns, rows - 1);
   const gpgpArea = calcArea(gpgpCenterPosition, constants.GPGP_MARGIN);
   const pzArea = calcArea(gpgpCenterPosition, constants.PROTECTED_ZONE_MARGIN);
-  const gpgpAreaArray = getAreaArray(
-    gpgpArea,
-    constants.GPGP_MARGIN,
-    columns,
-    rows
-  );
-  const pzAreaArray = getAreaArray(
-    pzArea,
-    constants.PROTECTED_ZONE_MARGIN,
-    columns,
-    rows
-  );
+  const gpgpAreaArray = getAreaArray(gpgpArea, columns, rows);
+  const pzAreaArray = getAreaArray(pzArea, columns, rows);
 
   const bottlePosition = getEntityRandomPosition(columns, rows, pzAreaArray);
   // push bottlePosition
@@ -65,31 +55,31 @@ export const generateGameData = (columns, rows) => {
 
 export const calcArea = (center, margin) => {
   return {
-    tl: [center[0] - margin, center[1] - margin],
-    tr: [center[0] + margin, center[1] - margin],
-    br: [center[0] + margin, center[1] + margin],
-    bl: [center[0] - margin, center[1] + margin]
+    topLft: [center[0] - margin, center[1] - margin],
+    topRgt: [center[0] + margin, center[1] - margin],
+    botRgt: [center[0] + margin, center[1] + margin],
+    botLft: [center[0] - margin, center[1] + margin]
   };
 };
 
-export const getAreaArray = (area, margin, columns, rows) => {
+export const getAreaArray = (area, columns, rows) => {
   const areaArray = [];
-  const { tl, tr, br, bl } = area;
-  const t = tl[1];
-  const b = br[1] + 1;
-  const l = bl[0];
-  const r = tr[0] + 1;
+  const { topLft, topRgt, botRgt, botLft } = area;
+  const top = topLft[1];
+  const bot = botRgt[1] + 1;
+  const lft = botLft[0];
+  const rgt = topRgt[0] + 1;
 
-  for (let col = t; col < b; col++) {
-    for (let row = l; row < r; row++) {
+  for (let col = top; col < bot; col++) {
+    for (let row = lft; row < rgt; row++) {
       let finalRow = row;
       let finalCol = col;
       // work with overflow negative
       if (row < 0) {
-        finalRow = columns - -row;
+        finalRow = columns + row;
       }
       if (col < 0) {
-        finalCol = rows - -col;
+        finalCol = rows + col;
       }
       // work with overflow positive
       if (col > rows - 1) {
