@@ -97,7 +97,7 @@ export const getAreaArray = (area, columns, rows) => {
 }
 
 const getEntityRandomPosition = (cols, rows, collisionArray) => {
-  /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
+  /* eslint no-constant-condition: ["error", { "checkLoops": false }] */
   while (true) {
     const suggested = randomPosition(cols, rows)
     if (!arrayIsInArray(collisionArray, suggested)) {
@@ -205,10 +205,11 @@ export const getMoveStepPositions = (
   rows
 ) => {
   const debug = false
-  if (debug)
+  if (debug) {
     log(
       `move ${roleStepsStatus} step(s) to direction ${directionStatus[0]} from current ${position} position`
     )
+  }
   const nextPosition = getNextMovePosition(
     position,
     directionStatus,

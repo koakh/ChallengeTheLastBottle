@@ -74,4 +74,4 @@ export const constants = {
     winner: 'Winner',
     inXRounds: 'in %ROUNDS% round(s)'
   }
-};
+}

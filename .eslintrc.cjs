@@ -4,11 +4,15 @@ module.exports = {
     es2021: true
   },
   extends: [
+    'plugin:react/jsx-runtime',
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
-    'eslint-config-prettier'
+    'eslint-config-prettier',
+    'standard',
+    // leave in the end
+    'prettier'
   ],
   overrides: [],
   parserOptions: {

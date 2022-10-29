@@ -1,46 +1,46 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 const subscribe = Object.assign(
   (el, resizeCallback) => {
-    subscribe.callbacks.set(el, resizeCallback);
+    subscribe.callbacks.set(el, resizeCallback)
     if (!subscribe.observerSingleton) {
       subscribe.observerSingleton = new ResizeObserver(entries => {
-        const callbacksEntries = [...subscribe.callbacks];
+        const callbacksEntries = [...subscribe.callbacks]
         callbacksEntries.forEach(([el, cb]) =>
           cb(entries.filter(({ target }) => target === el))
-        );
-      });
+        )
+      })
     }
-    subscribe.observerSingleton.observe(el);
+    subscribe.observerSingleton.observe(el)
     return () => {
-      subscribe.observerSingleton?.unobserve(el);
-      subscribe.callbacks.delete(el);
-    };
+      subscribe.observerSingleton?.unobserve(el)
+      subscribe.callbacks.delete(el)
+    }
   },
   {
     callbacks: new Map(),
     observerSingleton: undefined
   }
-);
+)
 
 export const useElementSize = ref => {
-  const elRef = useRef(null);
+  const elRef = useRef(null)
   const [{ height, width }, setSize] = useState(() => ({
     width: 0,
     height: 0
-  }));
+  }))
 
   useLayoutEffect(() => {
-    const element = elRef.current || ref?.current;
+    const element = elRef.current || ref?.current
     if (element) {
       const unSub = subscribe(element, entries => {
         entries.forEach(({ contentRect: { height, width } }) => {
-          setSize({ height, width });
-        });
-      });
-      return () => unSub();
+          setSize({ height, width })
+        })
+      })
+      return () => unSub()
     }
-  }, [ref]);
+  }, [ref])
 
-  return useMemo(() => ({ height, width, ref: elRef }), [height, width]);
-};
+  return useMemo(() => ({ height, width, ref: elRef }), [height, width])
+}

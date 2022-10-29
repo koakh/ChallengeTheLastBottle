@@ -1,6 +1,6 @@
-import { constants } from '../config';
-import { generateGameData } from '../game';
-import { initialState } from '../state/useStateValue';
+import { constants } from '../config'
+import { generateGameData } from '../game'
+import { initialState } from '../state/useStateValue'
 
 export default (state, action) => {
   switch (action.type) {
@@ -13,7 +13,7 @@ export default (state, action) => {
             position: action.payload.position
           }
         }
-      };
+      }
     case 'MOVE_BOTTLE':
       return {
         ...state,
@@ -23,7 +23,7 @@ export default (state, action) => {
             position: action.payload.position
           }
         }
-      };
+      }
     case 'SET_GRID':
       return {
         ...state,
@@ -31,7 +31,7 @@ export default (state, action) => {
           ...state.gameStatus,
           ...action.payload
         }
-      };
+      }
     case 'START_GAME':
       return {
         ...state,
@@ -39,12 +39,12 @@ export default (state, action) => {
           state.gameStatus.columns,
           state.gameStatus.rows
         )
-      };
+      }
     case 'STOP_GAME':
       return {
         ...state,
         gameStatus: initialState.gameStatus
-      };
+      }
     case 'ROLL_DICE':
       return {
         ...state,
@@ -52,16 +52,16 @@ export default (state, action) => {
           ...state.gameStatus,
           ...action.payload
         }
-      };
+      }
     case 'CHANGE_TURN':
       // eslint-disable-next-line no-case-declarations
       const turnKey =
         state.gameStatus.turn === constants.PLASTIC_BOTTLE_ID
           ? 'bottle'
-          : 'player';
+          : 'player'
       // clone rounds
       // eslint-disable-next-line no-case-declarations
-      const rounds = [...state.gameStatus.rounds];
+      const rounds = [...state.gameStatus.rounds]
       // const directionStatus = getDirection(state);
       rounds.push({
         player: state.gameStatus.turn,
@@ -71,7 +71,7 @@ export default (state, action) => {
           state.gameStatus.roleStepsStatus
         ],
         direction: action.payload.directionStatus
-      });
+      })
       return {
         ...state,
         gameStatus: {
@@ -84,7 +84,7 @@ export default (state, action) => {
           rounds,
           ...action.payload
         }
-      };
+      }
     case 'END_GAME':
       return {
         ...state,
@@ -93,9 +93,9 @@ export default (state, action) => {
           ...action.payload,
           running: false
         }
-      };
+      }
 
     default:
-      throw new Error('Unknown Action type!');
+      throw new Error('Unknown Action type!')
   }
-};
+}
