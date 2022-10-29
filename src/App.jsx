@@ -9,11 +9,15 @@ import Grid from './components/grid/Grid';
 import Legend from './components/legend/Legend';
 import { arrayIsInArray, log, randomNumber } from './utils/main';
 
+const debugTimeInterval = false;
+
 const App = () => {
   // hooks
   const [state, dispatch] = useStateValue();
   const [uiDisabled, setUIDisabled] = useState(false);
   const [isBootleTurn, setIsBottleTurn] = useState(false);
+  // TODO: this is a temporary state until figure out a solution for Burak recommendation
+  const [rollInterval, setRollInterval] = useState(null);
 
   // effects
   useEffect(() => {
@@ -21,6 +25,11 @@ const App = () => {
       onClickRollDiceHandler();
       setIsBottleTurn(false);
     }
+    return () => {
+      if (debugTimeInterval) {
+        log(`useEffect: cleanUp interval ${rollInterval}`);
+      }
+    };
   }, [state, isBootleTurn]);
 
   // eventHandlers
@@ -41,6 +50,7 @@ const App = () => {
     });
 
   const onClickRollDiceHandler = e => {
+    const debug = false;
     setUIDisabled(true);
     const roleDirectionStatus = randomNumber(1, 6);
     const roleStepsStatus = randomNumber(1, 6);
@@ -50,9 +60,11 @@ const App = () => {
       roleDirectionStatus,
       roleStepsStatus
     );
-    log(
-      `roleDirectionStatus: ${roleDirectionStatus}, roleStepsStatus: ${roleStepsStatus}, directionStatus: ${directionStatus}`
-    );
+    if (debug) {
+      log(
+        `roleDirectionStatus: ${roleDirectionStatus}, roleStepsStatus: ${roleStepsStatus}, directionStatus: ${directionStatus}`
+      );
+    }
 
     // start rolling
     dispatch({
@@ -77,7 +89,12 @@ const App = () => {
     // move steps
     let steps = 0;
     const interval = setInterval(() => {
-      // log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`);
+      if (debugTimeInterval) {
+        log(`clearInterval tick ${rollInterval}`);
+      }
+      if (debug) {
+        log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`);
+      }
       if (steps === roleStepsStatus - 1) {
         dispatch({
           type: 'CHANGE_TURN',
@@ -88,6 +105,9 @@ const App = () => {
           }
         });
         clearInterval(interval);
+        if (debugTimeInterval) {
+          log(`clearInterval interval ${rollInterval}`);
+        }
         // pass turn to bottle
         if (state.gameStatus.turn === constants.PLAYER_ID) {
           setIsBottleTurn(true);
@@ -113,7 +133,7 @@ const App = () => {
         }
       });
 
-      // check player postions to define end of game
+      // check player positions to define end of game
       let gameStop = false;
       let winner;
 
@@ -125,9 +145,10 @@ const App = () => {
         const playerIsOnTopOfBottle =
           moveTo[0] === state.gameStatus.bottleStatus.position[0] &&
           moveTo[1] === state.gameStatus.bottleStatus.position[1];
-        log(
-          `playerIsInGpgpArea: ${playerIsInGpgpArea}, playerIsOnTopOfBottle: ${playerIsOnTopOfBottle}`
-        );
+        if (debug)
+          log(
+            `playerIsInGpgpArea: ${playerIsInGpgpArea}, playerIsOnTopOfBottle: ${playerIsOnTopOfBottle}`
+          );
         if (playerIsInGpgpArea || playerIsOnTopOfBottle) {
           gameStop = true;
           winner = constants.PLAYER_ID;
@@ -140,9 +161,11 @@ const App = () => {
         const bootleIsOnTopOfPlayer =
           moveTo[0] === state.gameStatus.playerStatus.position[0] &&
           moveTo[1] === state.gameStatus.playerStatus.position[1];
-        log(
-          `bottleIsInGpgpArea: ${bottleIsInGpgpArea}, bootleIsOnTopOfPlayer: ${bootleIsOnTopOfPlayer}`
-        );
+        if (debug) {
+          log(
+            `bottleIsInGpgpArea: ${bottleIsInGpgpArea}, bootleIsOnTopOfPlayer: ${bootleIsOnTopOfPlayer}`
+          );
+        }
         if (bottleIsInGpgpArea) {
           gameStop = true;
           winner = constants.PLASTIC_BOTTLE_ID;
@@ -163,10 +186,20 @@ const App = () => {
         });
         setUIDisabled(false);
         clearInterval(interval);
+        if (debugTimeInterval) {
+          log(`clearInterval interval ${rollInterval}`);
+        }
       }
 
       steps++;
     }, constants.STEPS_TIME_INTERVAL);
+    setRollInterval(interval);
+    if (debugTimeInterval) {
+      log(`created a new setInterval ${rollInterval}`);
+    }
+
+    // return interval to be used in useEffect's cleanup and prevent stalled imeIntervals
+    return interval;
   };
 
   // debug helper

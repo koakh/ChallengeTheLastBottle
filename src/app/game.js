@@ -110,13 +110,8 @@ const getEntityRandomPosition = (cols, rows, collisionArray) => {
  * @param {*} state
  * @returns directionStatus array
  */
-export const getDirection = (
-  state,
-  directionStatus,
-  roleDirectionStatus,
-  roleStepsStatus
-) => {
-  const debug = true;
+export const getDirection = (state, directionStatus, roleDirectionStatus) => {
+  const debug = false;
 
   const outAvailableDirections = availableDirections =>
     log(
