@@ -1,6 +1,5 @@
 .gitBeforeCreateGitHubRepo
 .vscode
-dist
 backup.sh
 dockerpush.sh
 NOTES.md
