@@ -20,6 +20,7 @@ export default function Cell ({ position }) {
   };
 
   const drawBack = (x, y) => {
+    const useRandomColors = constants.USE_RANDOM_COLORS;
     const [gpgpR, gpgpG, gpgpB] = constants.COLORS.randomGpgpArea;
     const [pzR, pzG, pzB] = constants.COLORS.randomPzArea;
     const [oceanR, oceanG, oceanB] = constants.COLORS.randomOceanArea;
@@ -46,7 +47,9 @@ export default function Cell ({ position }) {
       state.gameStatus.playerStatus.position[0] === x &&
       state.gameStatus.playerStatus.position[1] === y
     ) {
-      return generateRandomRgbColor(playerPosR, playerPosG, playerPosB);
+      return useRandomColors
+        ? generateRandomRgbColor(playerPosR, playerPosG, playerPosB)
+        : constants.COLORS.playerPositionCellArea;
     }
     // bottlePosition, before startingPosition, bottle always overlap startingPosition
     if (
@@ -55,7 +58,9 @@ export default function Cell ({ position }) {
       state.gameStatus.bottleStatus.position[0] === x &&
       state.gameStatus.bottleStatus.position[1] === y
     ) {
-      return generateRandomRgbColor(bottlePosR, bottlePosG, bottlePosB);
+      return useRandomColors
+        ? generateRandomRgbColor(bottlePosR, bottlePosG, bottlePosB)
+        : constants.bottlePositionCellArea;
     }
     // startingPosition
     if (
@@ -63,7 +68,9 @@ export default function Cell ({ position }) {
       state.gameStatus.startingPosition[0] === x &&
       state.gameStatus.startingPosition[1] === y
     ) {
-      return generateRandomRgbColor(startPosR, startPosG, startPosB);
+      return useRandomColors
+        ? generateRandomRgbColor(startPosR, startPosG, startPosB)
+        : constants.COLORS.startingCellArea;
     }
 
     // this was the last priority to render before water
@@ -73,18 +80,24 @@ export default function Cell ({ position }) {
       state.gameStatus.gpgpAreaArray &&
       arrayIsInArray(state.gameStatus.gpgpAreaArray, [x, y])
     ) {
-      return generateRandomRgbColor(gpgpR, gpgpG, gpgpB);
+      return useRandomColors
+        ? generateRandomRgbColor(gpgpR, gpgpG, gpgpB)
+        : constants.COLORS.gpgpArea;
     }
     // protectedZone
     if (
       state.gameStatus.pzAreaArray &&
       arrayIsInArray(state.gameStatus.pzAreaArray, [x, y])
     ) {
-      return generateRandomRgbColor(pzR, pzG, pzB);
+      return useRandomColors
+        ? generateRandomRgbColor(pzR, pzG, pzB)
+        : constants.COLORS.pzArea;
     }
 
     // ocean
-    return generateRandomRgbColor(oceanR, oceanG, oceanB);
+    return useRandomColors
+      ? generateRandomRgbColor(oceanR, oceanG, oceanB)
+      : constants.COLORS.oceanArea;
   };
 
   return (

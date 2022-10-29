@@ -1,5 +1,5 @@
 export const constants = {
-  DEBUG: true,
+  DEBUG: false,
   SHOW_GRID_POSITION: false,
   USE_RANDOM_COLORS: false,
   MIN_GRID_SIZE: [10, 10],
@@ -30,7 +30,7 @@ export const constants = {
     oceanArea: '#4477ee',
     playerPositionCellArea: '#eedd56',
     bottlePositionCellArea: '#332211',
-    startingCellArea: '#5667de',
+    startingCellArea: '#2244ee',
     randomGpgpArea: [
       [220, 255],
       [40, 80],
