@@ -9,7 +9,7 @@ ADD . .
 
 RUN yarn
 
-# RUN yarn build
+RUN yarn build
 
 # ENTRYPOINT ["/entrypoint.sh"]
 
