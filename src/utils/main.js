@@ -28,21 +28,7 @@ export const generateRandomRgbColor = (ra, ga, ba) => {
 };
 
 export const arrayIsInArray = (arr, subArr) => {
-  for (let i = 0; i < arr.length; i++) {
-    let checker = false;
-    for (let j = 0; j < arr[i].length; j++) {
-      if (arr[i][j] === subArr[j]) {
-        checker = true;
-      } else {
-        checker = false;
-        break;
-      }
-    }
-    if (checker) {
-      return true;
-    }
-  }
-  return false;
+  return arr.some(e => e[0] === subArr[0] && e[1] === subArr[1]);
 };
 
 export const randomPosition = (cols, rows) => [

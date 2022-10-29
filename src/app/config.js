@@ -1,6 +1,7 @@
 export const constants = {
   DEBUG: true,
   SHOW_GRID_POSITION: false,
+  USE_RANDOM_COLORS: false,
   MIN_GRID_SIZE: [10, 10],
   CELL_SIZE: [30, 30],
   PLAYER_ID: 'Henry',
@@ -24,6 +25,12 @@ export const constants = {
   STEPS_TIME_INTERVAL: 500,
   BOTTLE_THINK_INTERVAL: 1000,
   COLORS: {
+    gpgpArea: '#dd4444',
+    pzArea: '#44aa66',
+    oceanArea: '#4477ee',
+    playerPositionCellArea: '#eedd56',
+    bottlePositionCellArea: '#332211',
+    startingCellArea: '#5667de',
     randomGpgpArea: [
       [220, 255],
       [40, 80],
