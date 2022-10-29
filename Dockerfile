@@ -14,4 +14,4 @@ RUN yarn build
 # ENTRYPOINT ["/entrypoint.sh"]
 
 # CMD ["yarn", "dev"]
-CMD ["yarn", "serve"]
+CMD ["yarn", "--host", "serve"]
