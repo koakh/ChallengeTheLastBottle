@@ -1,69 +1,69 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-import './App.css';
-import { constants } from './app/config';
-import { getDirection, getMoveStepPositions } from './app/game';
-import { useStateValue } from './app/state/useStateValue';
-import Dice from './components/dice/Dice';
-import Grid from './components/grid/Grid';
-import Legend from './components/legend/Legend';
-import { arrayIsInArray, log, randomNumber } from './utils/main';
+import './App.css'
+import { constants } from './app/config'
+import { getDirection, getMoveStepPositions } from './app/game'
+import { useStateValue } from './app/state/useStateValue'
+import Dice from './components/dice/Dice'
+import Grid from './components/grid/Grid'
+import Legend from './components/legend/Legend'
+import { arrayIsInArray, log, randomNumber } from './utils/main'
 
-const debugTimeInterval = false;
+const debugTimeInterval = false
 
 const App = () => {
   // hooks
-  const [state, dispatch] = useStateValue();
-  const [uiDisabled, setUIDisabled] = useState(false);
-  const [isBootleTurn, setIsBottleTurn] = useState(false);
+  const [state, dispatch] = useStateValue()
+  const [uiDisabled, setUIDisabled] = useState(false)
+  const [isBootleTurn, setIsBottleTurn] = useState(false)
   // TODO: this is a temporary state until figure out a solution for Burak recommendation
-  const [rollInterval, setRollInterval] = useState(null);
+  const [rollInterval, setRollInterval] = useState(null)
 
   // effects
   useEffect(() => {
     if (state.gameStatus.running && isBootleTurn) {
-      onClickRollDiceHandler();
-      setIsBottleTurn(false);
+      onClickRollDiceHandler()
+      setIsBottleTurn(false)
     }
     return () => {
       if (debugTimeInterval) {
-        log(`useEffect: cleanUp interval ${rollInterval}`);
+        log(`useEffect: cleanUp interval ${rollInterval}`)
       }
-    };
-  }, [state, isBootleTurn]);
+    }
+  }, [state, isBootleTurn])
 
   // eventHandlers
-  const onClickStartGameHandler = e => {
-    setUIDisabled(true);
+  const onClickStartGameHandler = () => {
+    setUIDisabled(true)
     dispatch({
       type: 'START_GAME'
-    });
+    })
     // give some time for bottle think its play and game state finish setup
     setTimeout(() => {
-      setIsBottleTurn(true);
-    }, constants.BOTTLE_THINK_INTERVAL);
-  };
+      setIsBottleTurn(true)
+    }, constants.BOTTLE_THINK_INTERVAL)
+  }
 
-  const onClickStopGameHandler = e =>
+  const onClickStopGameHandler = () =>
     dispatch({
       type: 'STOP_GAME'
-    });
+    })
 
-  const onClickRollDiceHandler = e => {
-    const debug = false;
-    setUIDisabled(true);
-    const roleDirectionStatus = randomNumber(1, 6);
-    const roleStepsStatus = randomNumber(1, 6);
+  const onClickRollDiceHandler = () => {
+    const debug = false
+    setUIDisabled(true)
+    const roleDirectionStatus = randomNumber(1, 6)
+    const roleStepsStatus = randomNumber(1, 6)
     const directionStatus = getDirection(
       state,
       state.gameStatus.directionStatus,
       roleDirectionStatus,
       roleStepsStatus
-    );
+    )
     if (debug) {
       log(
         `roleDirectionStatus: ${roleDirectionStatus}, roleStepsStatus: ${roleStepsStatus}, directionStatus: ${directionStatus}`
-      );
+      )
     }
 
     // start rolling
@@ -74,26 +74,26 @@ const App = () => {
         roleDirectionStatus,
         roleStepsStatus
       }
-    });
+    })
 
-    let moveTo;
-    let dispatchType;
+    let moveTo
+    let dispatchType
     if (state.gameStatus.turn === constants.PLAYER_ID) {
-      moveTo = state.gameStatus.playerStatus.position;
-      dispatchType = 'MOVE_PLAYER';
+      moveTo = state.gameStatus.playerStatus.position
+      dispatchType = 'MOVE_PLAYER'
     } else {
-      moveTo = state.gameStatus.bottleStatus.position;
-      dispatchType = 'MOVE_BOTTLE';
+      moveTo = state.gameStatus.bottleStatus.position
+      dispatchType = 'MOVE_BOTTLE'
     }
 
     // move steps
-    let steps = 0;
+    let steps = 0
     const interval = setInterval(() => {
       if (debugTimeInterval) {
-        log(`clearInterval tick ${rollInterval}`);
+        log(`clearInterval tick ${rollInterval}`)
       }
       if (debug) {
-        log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`);
+        log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`)
       }
       if (steps === roleStepsStatus - 1) {
         dispatch({
@@ -103,16 +103,16 @@ const App = () => {
             roleDirectionStatus,
             roleStepsStatus
           }
-        });
-        clearInterval(interval);
+        })
+        clearInterval(interval)
         if (debugTimeInterval) {
-          log(`clearInterval interval ${rollInterval}`);
+          log(`clearInterval interval ${rollInterval}`)
         }
         // pass turn to bottle
         if (state.gameStatus.turn === constants.PLAYER_ID) {
-          setIsBottleTurn(true);
+          setIsBottleTurn(true)
         } else {
-          setUIDisabled(false);
+          setUIDisabled(false)
         }
       }
 
@@ -123,7 +123,7 @@ const App = () => {
         roleStepsStatus,
         state.gameStatus.columns,
         state.gameStatus.rows
-      );
+      )
 
       // dispatch moveTo
       dispatch({
@@ -131,49 +131,49 @@ const App = () => {
         payload: {
           position: moveTo
         }
-      });
+      })
 
       // check player positions to define end of game
-      let gameStop = false;
-      let winner;
+      let gameStop = false
+      let winner
 
       if (state.gameStatus.turn === constants.PLAYER_ID) {
         const playerIsInGpgpArea = arrayIsInArray(
           state.gameStatus.gpgpAreaArray,
           moveTo
-        );
+        )
         const playerIsOnTopOfBottle =
           moveTo[0] === state.gameStatus.bottleStatus.position[0] &&
-          moveTo[1] === state.gameStatus.bottleStatus.position[1];
+          moveTo[1] === state.gameStatus.bottleStatus.position[1]
         if (debug)
           log(
             `playerIsInGpgpArea: ${playerIsInGpgpArea}, playerIsOnTopOfBottle: ${playerIsOnTopOfBottle}`
-          );
+          )
         if (playerIsInGpgpArea || playerIsOnTopOfBottle) {
-          gameStop = true;
-          winner = constants.PLAYER_ID;
+          gameStop = true
+          winner = constants.PLAYER_ID
         }
       } else {
         const bottleIsInGpgpArea = arrayIsInArray(
           state.gameStatus.gpgpAreaArray,
           moveTo
-        );
+        )
         const bootleIsOnTopOfPlayer =
           moveTo[0] === state.gameStatus.playerStatus.position[0] &&
-          moveTo[1] === state.gameStatus.playerStatus.position[1];
+          moveTo[1] === state.gameStatus.playerStatus.position[1]
         if (debug) {
           log(
             `bottleIsInGpgpArea: ${bottleIsInGpgpArea}, bootleIsOnTopOfPlayer: ${bootleIsOnTopOfPlayer}`
-          );
+          )
         }
         if (bottleIsInGpgpArea) {
-          gameStop = true;
-          winner = constants.PLASTIC_BOTTLE_ID;
+          gameStop = true
+          winner = constants.PLASTIC_BOTTLE_ID
         }
         // player is a lucky one, bottle comes to it hands
         if (bootleIsOnTopOfPlayer) {
-          gameStop = true;
-          winner = constants.PLAYER_ID;
+          gameStop = true
+          winner = constants.PLAYER_ID
         }
       }
 
@@ -183,24 +183,24 @@ const App = () => {
           payload: {
             winner
           }
-        });
-        setUIDisabled(false);
-        clearInterval(interval);
+        })
+        setUIDisabled(false)
+        clearInterval(interval)
         if (debugTimeInterval) {
-          log(`clearInterval interval ${rollInterval}`);
+          log(`clearInterval interval ${rollInterval}`)
         }
       }
 
-      steps++;
-    }, constants.STEPS_TIME_INTERVAL);
-    setRollInterval(interval);
+      steps++
+    }, constants.STEPS_TIME_INTERVAL)
+    setRollInterval(interval)
     if (debugTimeInterval) {
-      log(`created a new setInterval ${rollInterval}`);
+      log(`created a new setInterval ${rollInterval}`)
     }
 
     // return interval to be used in useEffect's cleanup and prevent stalled imeIntervals
-    return interval;
-  };
+    return interval
+  }
 
   // debug helper
   const stateOutput = JSON.stringify(
@@ -211,22 +211,22 @@ const App = () => {
     },
     undefined,
     2
-  );
-  let roundNo = 1;
-  let turnPosition;
+  )
+  let roundNo = 1
+  let turnPosition
   if (state.gameStatus.running && constants.DEBUG) {
     if (state.gameStatus.rounds.length > 0) {
-      roundNo = state.gameStatus.rounds.length + 1;
+      roundNo = state.gameStatus.rounds.length + 1
     }
     const turnKey =
       state.gameStatus.turn === constants.PLASTIC_BOTTLE_ID
         ? 'bottleStatus'
-        : 'playerStatus';
+        : 'playerStatus'
     turnPosition = ` : C${state.gameStatus[turnKey].position[0] + 1}:R${state
       .gameStatus[turnKey].position[1] + 1} / ${
       state.gameStatus[turnKey].position[0]
     }
-          :${state.gameStatus[turnKey].position[1]}`;
+          :${state.gameStatus[turnKey].position[1]}`
   }
 
   return (
@@ -288,7 +288,7 @@ const App = () => {
       <Legend />
       {constants.DEBUG && <pre>state: {stateOutput}</pre>}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -1,6 +1,6 @@
-import './Row.css';
+import './Row.css'
 
-import Cell from '../cell/Cell';
+import Cell from '../cell/Cell'
 
 export default function Row ({ columnId, columns }) {
   return (
@@ -15,5 +15,5 @@ export default function Row ({ columnId, columns }) {
         </div>
       ))}
     </div>
-  );
+  )
 }

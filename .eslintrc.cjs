@@ -4,11 +4,11 @@ module.exports = {
     es2021: true
   },
   extends: [
+    'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'standard',
-    // leave in the end
-    'prettier'
+    'plugin:import/recommended',
+    'plugin:jsx-a11y/recommended',
+    'eslint-config-prettier'
   ],
   overrides: [],
   parserOptions: {
@@ -20,6 +20,8 @@ module.exports = {
     'no-console': 'warn',
     'react/prop-types': 'off',
     'react/self-closing-comp': 'warn',
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
     'import/order': [
       'warn',
       {
@@ -46,6 +48,12 @@ module.exports = {
   settings: {
     react: {
       version: 'detect'
+    },
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx']
+      }
     }
   }
-};
+}

@@ -1,6 +1,6 @@
-import { log, arrayIsInArray, randomPosition } from '../utils/main';
+import { log, arrayIsInArray, randomPosition } from '../utils/main'
 
-import { constants } from './config';
+import { constants } from './config'
 
 export const generateGameData = (columns, rows) => {
   // protect from invalid hacked configurations
@@ -11,23 +11,23 @@ export const generateGameData = (columns, rows) => {
     log(
       `error invalid configuration data detected on margin, one of the margins exceed max value of ${constants.MAX_MARGIN}`,
       'error'
-    );
-    return { running: false };
+    )
+    return { running: false }
   }
-  const gpgpCenterPosition = randomPosition(columns, rows - 1);
-  const gpgpArea = calcArea(gpgpCenterPosition, constants.GPGP_MARGIN);
-  const pzArea = calcArea(gpgpCenterPosition, constants.PROTECTED_ZONE_MARGIN);
-  const gpgpAreaArray = getAreaArray(gpgpArea, columns, rows);
-  const pzAreaArray = getAreaArray(pzArea, columns, rows);
+  const gpgpCenterPosition = randomPosition(columns, rows - 1)
+  const gpgpArea = calcArea(gpgpCenterPosition, constants.GPGP_MARGIN)
+  const pzArea = calcArea(gpgpCenterPosition, constants.PROTECTED_ZONE_MARGIN)
+  const gpgpAreaArray = getAreaArray(gpgpArea, columns, rows)
+  const pzAreaArray = getAreaArray(pzArea, columns, rows)
 
-  const bottlePosition = getEntityRandomPosition(columns, rows, pzAreaArray);
+  const bottlePosition = getEntityRandomPosition(columns, rows, pzAreaArray)
   // push bottlePosition
   const playerPosition = getEntityRandomPosition(
     columns,
     rows,
     // push bottlePosition, player can't start in same position
     [...pzAreaArray, bottlePosition]
-  );
+  )
 
   // state.gameStatus
   return {
@@ -50,8 +50,8 @@ export const generateGameData = (columns, rows) => {
     // pzArea,
     gpgpAreaArray,
     pzAreaArray
-  };
-};
+  }
+}
 
 export const calcArea = (center, margin) => {
   return {
@@ -59,51 +59,52 @@ export const calcArea = (center, margin) => {
     topRgt: [center[0] + margin, center[1] - margin],
     botRgt: [center[0] + margin, center[1] + margin],
     botLft: [center[0] - margin, center[1] + margin]
-  };
-};
+  }
+}
 
 export const getAreaArray = (area, columns, rows) => {
-  const areaArray = [];
-  const { topLft, topRgt, botRgt, botLft } = area;
-  const top = topLft[1];
-  const bot = botRgt[1] + 1;
-  const lft = botLft[0];
-  const rgt = topRgt[0] + 1;
+  const areaArray = []
+  const { topLft, topRgt, botRgt, botLft } = area
+  const top = topLft[1]
+  const bot = botRgt[1] + 1
+  const lft = botLft[0]
+  const rgt = topRgt[0] + 1
 
   for (let col = top; col < bot; col++) {
     for (let row = lft; row < rgt; row++) {
-      let finalRow = row;
-      let finalCol = col;
+      let finalRow = row
+      let finalCol = col
       // work with overflow negative
       if (row < 0) {
-        finalRow = columns + row;
+        finalRow = columns + row
       }
       if (col < 0) {
-        finalCol = rows + col;
+        finalCol = rows + col
       }
       // work with overflow positive
       if (col > rows - 1) {
-        finalCol = col - rows;
+        finalCol = col - rows
       }
       if (row > columns - 1) {
-        finalRow = row - columns;
+        finalRow = row - columns
       }
       // log(`col:${col}:${finalCol} x row:${row}:${finalRow}`);
-      areaArray.push([finalRow, finalCol]);
+      areaArray.push([finalRow, finalCol])
     }
   }
 
-  return areaArray;
-};
+  return areaArray
+}
 
 const getEntityRandomPosition = (cols, rows, collisionArray) => {
+  /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
   while (true) {
-    const suggested = randomPosition(cols, rows);
+    const suggested = randomPosition(cols, rows)
     if (!arrayIsInArray(collisionArray, suggested)) {
-      return suggested;
+      return suggested
     }
   }
-};
+}
 
 /**
  * get direction player from current state
@@ -111,7 +112,7 @@ const getEntityRandomPosition = (cols, rows, collisionArray) => {
  * @returns directionStatus array
  */
 export const getDirection = (state, directionStatus, roleDirectionStatus) => {
-  const debug = false;
+  const debug = false
 
   const outAvailableDirections = availableDirections =>
     log(
@@ -120,21 +121,21 @@ export const getDirection = (state, directionStatus, roleDirectionStatus) => {
         undefined,
         2
       )}`
-    );
+    )
 
   // start without any round
   if (state.gameStatus.rounds.length === 0) {
-    const availableDirections = constants.DIRECTIONS.slice(0, 6);
-    if (debug) outAvailableDirections(availableDirections);
-    return availableDirections[roleDirectionStatus - 1];
+    const availableDirections = constants.DIRECTIONS.slice(0, 6)
+    if (debug) outAvailableDirections(availableDirections)
+    return availableDirections[roleDirectionStatus - 1]
   } else {
     const availableDirections = constants.DIRECTIONS.filter(
       e => e[0] !== directionStatus[0] && e[0] !== directionStatus[1]
-    );
-    if (debug) outAvailableDirections(availableDirections);
-    return availableDirections[roleDirectionStatus - 1];
+    )
+    if (debug) outAvailableDirections(availableDirections)
+    return availableDirections[roleDirectionStatus - 1]
   }
-};
+}
 
 export const getNextMovePosition = (
   position,
@@ -142,53 +143,53 @@ export const getNextMovePosition = (
   columns,
   rows
 ) => {
-  let result = position;
+  let result = position
   switch (directionStatus[0]) {
     case 'N':
-      result = [position[0], position[1] - 1];
-      break;
+      result = [position[0], position[1] - 1]
+      break
     case 'NE':
-      result = [position[0] + 1, position[1] - 1];
-      break;
+      result = [position[0] + 1, position[1] - 1]
+      break
     case 'E':
-      result = [position[0] + 1, position[1]];
-      break;
+      result = [position[0] + 1, position[1]]
+      break
     case 'SE':
-      result = [position[0] + 1, position[1] + 1];
-      break;
+      result = [position[0] + 1, position[1] + 1]
+      break
     case 'S':
-      result = [position[0], position[1] + 1];
-      break;
+      result = [position[0], position[1] + 1]
+      break
     case 'SW':
-      result = [position[0] - 1, position[1] + 1];
-      break;
+      result = [position[0] - 1, position[1] + 1]
+      break
     case 'W':
-      result = [position[0] - 1, position[1]];
-      break;
+      result = [position[0] - 1, position[1]]
+      break
     case 'NW':
-      result = [position[0] - 1, position[1] - 1];
-      break;
+      result = [position[0] - 1, position[1] - 1]
+      break
     default:
-      break;
+      break
   }
   // top limit
   if (result[1] < 0) {
-    result = [result[0], rows + result[1]];
+    result = [result[0], rows + result[1]]
   }
   // left limit
   if (result[0] < 0) {
-    result = [columns + result[0], result[1]];
+    result = [columns + result[0], result[1]]
   }
   // bottom limit
   if (result[1] > rows - 1) {
-    result = [result[0], 0];
+    result = [result[0], 0]
   }
   // rigth limit
   if (result[0] > columns - 1) {
-    result = [0, result[1]];
+    result = [0, result[1]]
   }
-  return result;
-};
+  return result
+}
 
 /**
  * get player move step position from state
@@ -203,18 +204,18 @@ export const getMoveStepPositions = (
   columns,
   rows
 ) => {
-  const debug = false;
+  const debug = false
   if (debug)
     log(
       `move ${roleStepsStatus} step(s) to direction ${directionStatus[0]} from current ${position} position`
-    );
+    )
   const nextPosition = getNextMovePosition(
     position,
     directionStatus,
     columns,
     rows
-  );
+  )
 
-  if (debug) log(`nextPosition: [${nextPosition}]`);
-  return nextPosition;
-};
+  if (debug) log(`nextPosition: [${nextPosition}]`)
+  return nextPosition
+}
