@@ -9,6 +9,9 @@ ADD . .
 
 RUN yarn
 
+RUN yarn build
+
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["yarn", "dev"]
+# CMD ["yarn", "dev"]
+CMD ["yarn", "serve"]
