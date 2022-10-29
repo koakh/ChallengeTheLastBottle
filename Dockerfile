@@ -9,9 +9,9 @@ ADD . .
 
 RUN yarn
 
-RUN yarn build
+# RUN yarn build
 
-# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
-# CMD ["yarn", "dev"]
-CMD ["yarn", "--host"]
+CMD ["yarn", "dev"]
+# CMD ["yarn", "--host"]
