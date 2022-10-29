@@ -12,6 +12,9 @@ export default function Legend () {
             <img alt='player' className='thing' src={player1} />
           </div>
           <div className='col1'>You</div>
+          <div className='col0'>
+            <div className='pz' />
+          </div>
           <div className='col2'>Protected Zone</div>
           <div className='col34'>N - North</div>
           <div className='col34'>E - East</div>
@@ -23,6 +26,9 @@ export default function Legend () {
             <img alt='player' className='thing' src={bottle2} />
           </div>
           <div className='col1'>The Bottle</div>
+          <div className='col0'>
+            <div className='gpgp' />
+          </div>
           <div className='col2'>GPgp - Great Pacific garbage patch</div>
           <div className='col34'>S - South</div>
           <div className='col34'>W - West</div>

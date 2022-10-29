@@ -11,8 +11,8 @@
 }
 
 .legendTitle {
-  padding: 5px;
-  text-align: left;
+  padding: 5px 5px 5px 15px;
+  text-align: left;  
 }
 
 .legendRow {  
@@ -30,7 +30,7 @@
 }
 
 .col1 {
-  min-width: 100px;  
+  min-width: 85px;  
 }
 
 .col2 {
@@ -38,9 +38,25 @@
 }
 
 .col34 {
-  min-width: 90px;  
+  min-width: 80px;  
 }
 
 .col56 {
-  min-width: 120px;  
+  min-width: 110px;  
+}
+
+.pz {
+  background: #44aa66;
+  margin-top: 5px;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+}
+
+.gpgp {
+  background: #dd4444;
+  margin-top: 5px;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
 }

@@ -25,6 +25,7 @@ const App = () => {
 
   // eventHandlers
   const onClickStartGameHandler = e => {
+    setUIDisabled(true);
     dispatch({
       type: 'START_GAME'
     });
@@ -46,7 +47,11 @@ const App = () => {
     const directionStatus = getDirection(
       state,
       state.gameStatus.directionStatus,
+      roleDirectionStatus,
       roleStepsStatus
+    );
+    log(
+      `roleDirectionStatus: ${roleDirectionStatus}, roleStepsStatus: ${roleStepsStatus}, directionStatus: ${directionStatus}`
     );
 
     // start rolling

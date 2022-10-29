@@ -39,20 +39,6 @@ export default function Cell ({ position }) {
       startPosB
     ] = constants.COLORS.randomStartingCellArea;
 
-    // player
-    if (
-      state.gameStatus.gpgpAreaArray &&
-      arrayIsInArray(state.gameStatus.gpgpAreaArray, [x, y])
-    ) {
-      return generateRandomRgbColor(gpgpR, gpgpG, gpgpB);
-    }
-    // protectedZone
-    if (
-      state.gameStatus.pzAreaArray &&
-      arrayIsInArray(state.gameStatus.pzAreaArray, [x, y])
-    ) {
-      return generateRandomRgbColor(pzR, pzG, pzB);
-    }
     // playerPosition, before startingPosition, player always overlap startingPosition
     if (
       state.gameStatus.playerStatus &&
@@ -78,6 +64,23 @@ export default function Cell ({ position }) {
       state.gameStatus.startingPosition[1] === y
     ) {
       return generateRandomRgbColor(startPosR, startPosG, startPosB);
+    }
+
+    // this was the last priority to render before water
+
+    // gpgp
+    if (
+      state.gameStatus.gpgpAreaArray &&
+      arrayIsInArray(state.gameStatus.gpgpAreaArray, [x, y])
+    ) {
+      return generateRandomRgbColor(gpgpR, gpgpG, gpgpB);
+    }
+    // protectedZone
+    if (
+      state.gameStatus.pzAreaArray &&
+      arrayIsInArray(state.gameStatus.pzAreaArray, [x, y])
+    ) {
+      return generateRandomRgbColor(pzR, pzG, pzB);
     }
 
     // ocean

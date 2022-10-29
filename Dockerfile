@@ -7,8 +7,8 @@ RUN chmod +x /entrypoint.sh
 
 ADD . .
 
-RUN npm install
+RUN yarn
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]

@@ -120,10 +120,15 @@ const getEntityRandomPosition = (cols, rows, collisionArray) => {
  * @param {*} state
  * @returns directionStatus array
  */
-export const getDirection = (state, directionStatus, roleStepsStatus) => {
-  const debug = false;
+export const getDirection = (
+  state,
+  directionStatus,
+  roleDirectionStatus,
+  roleStepsStatus
+) => {
+  const debug = true;
 
-  const outavailableDirections = availableDirections =>
+  const outAvailableDirections = availableDirections =>
     log(
       `availableDirections: ${JSON.stringify(
         availableDirections.map(e => e[0]),
@@ -135,14 +140,14 @@ export const getDirection = (state, directionStatus, roleStepsStatus) => {
   // start without any round
   if (state.gameStatus.rounds.length === 0) {
     const availableDirections = constants.DIRECTIONS.slice(0, 6);
-    if (debug) outavailableDirections(availableDirections);
-    return availableDirections[roleStepsStatus - 1];
+    if (debug) outAvailableDirections(availableDirections);
+    return availableDirections[roleDirectionStatus - 1];
   } else {
     const availableDirections = constants.DIRECTIONS.filter(
       e => e[0] !== directionStatus[0] && e[0] !== directionStatus[1]
     );
-    if (debug) outavailableDirections(availableDirections);
-    return availableDirections[roleStepsStatus - 1];
+    if (debug) outAvailableDirections(availableDirections);
+    return availableDirections[roleDirectionStatus - 1];
   }
 };
 
@@ -213,7 +218,7 @@ export const getMoveStepPositions = (
   columns,
   rows
 ) => {
-  const debug = true;
+  const debug = false;
   if (debug)
     log(
       `move ${roleStepsStatus} step(s) to direction ${directionStatus[0]} from current ${position} position`

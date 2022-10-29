@@ -36,15 +36,15 @@ html,body {
   margin-right: 10px;
   height: 50px;
   color: black;
-  background-color: #9c9c9c;
   min-width: 80px;
+  /* background-color: #adadad; */
+  background-image: linear-gradient(rgb(180,180,220), rgb(220,220,255));
   /* background-image: linear-gradient(rgb(120,120,220), rgb(180,180,255)); */
   /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
 }
 
 .button:disabled {
-  background-color: #8a8a8a;
-  /* background-image: linear-gradient(rgb(80,80,180), rgb(140,140,240)); */
+  background-image: linear-gradient(rgb(100,100,120), rgb(160,160,180));
 }
 
 .button:hover {
