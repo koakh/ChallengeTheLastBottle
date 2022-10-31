@@ -14,9 +14,8 @@ const App = () => {
   const [state, dispatch] = useStateValue()
   const [uiDisabled, setUIDisabled] = useState(false)
   const [isBootleTurn, setIsBottleTurn] = useState(false)
-  // TODO: clean up
-  // const [rollInterval, setRollInterval] = useState(null)
   const rollInterval = useRef()
+  // helper to inspect render
   const count = useRef(0)
 
   useEffect(() => {
@@ -186,8 +185,6 @@ const App = () => {
 
       steps++
     }, constants.STEPS_TIME_INTERVAL)
-    // TODO: clean up
-    // setRollInterval(interval)
     rollInterval.current = interval
 
     // return interval to be used in useEffect's cleanup and prevent stalled imeIntervals
