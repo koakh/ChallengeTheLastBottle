@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import './App.css'
 import { constants } from './app/config'
@@ -14,7 +14,14 @@ const App = () => {
   const [state, dispatch] = useStateValue()
   const [uiDisabled, setUIDisabled] = useState(false)
   const [isBootleTurn, setIsBottleTurn] = useState(false)
-  const [rollInterval, setRollInterval] = useState(null)
+  // TODO: clean up
+  // const [rollInterval, setRollInterval] = useState(null)
+  const rollInterval = useRef()
+  const count = useRef(0)
+
+  useEffect(() => {
+    count.current = count.current + 1
+  })
 
   // effects
   useEffect(() => {
@@ -179,7 +186,9 @@ const App = () => {
 
       steps++
     }, constants.STEPS_TIME_INTERVAL)
-    setRollInterval(interval)
+    // TODO: clean up
+    // setRollInterval(interval)
+    rollInterval.current = interval
 
     // return interval to be used in useEffect's cleanup and prevent stalled imeIntervals
     return interval
@@ -269,7 +278,11 @@ const App = () => {
       </div>
       <Grid />
       <Legend />
-      {constants.DEBUG && <pre>state: {stateOutput}</pre>}
+      {constants.DEBUG && (
+        <pre>
+          render Count: {count.current}, state: {stateOutput}
+        </pre>
+      )}
     </div>
   )
 }
