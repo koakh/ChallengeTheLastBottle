@@ -9,14 +9,11 @@ import Grid from './components/grid/Grid'
 import Legend from './components/legend/Legend'
 import { arrayIsInArray, log, randomNumber } from './utils/main'
 
-const debugTimeInterval = false
-
 const App = () => {
   // hooks
   const [state, dispatch] = useStateValue()
   const [uiDisabled, setUIDisabled] = useState(false)
   const [isBootleTurn, setIsBottleTurn] = useState(false)
-  // TODO: this is a temporary state until figure out a solution for Burak recommendation
   const [rollInterval, setRollInterval] = useState(null)
 
   // effects
@@ -26,11 +23,9 @@ const App = () => {
       setIsBottleTurn(false)
     }
     return () => {
-      if (debugTimeInterval) {
-        log(`useEffect: cleanUp interval ${rollInterval}`)
-      }
+      clearInterval(rollInterval)
     }
-  }, [state, isBootleTurn])
+  }, [state.gameStatus.running, isBootleTurn])
 
   // eventHandlers
   const onClickStartGameHandler = () => {
@@ -89,9 +84,6 @@ const App = () => {
     // move steps
     let steps = 0
     const interval = setInterval(() => {
-      if (debugTimeInterval) {
-        log(`clearInterval tick ${rollInterval}`)
-      }
       if (debug) {
         log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`)
       }
@@ -105,9 +97,6 @@ const App = () => {
           }
         })
         clearInterval(interval)
-        if (debugTimeInterval) {
-          log(`clearInterval interval ${rollInterval}`)
-        }
         // pass turn to bottle
         if (state.gameStatus.turn === constants.PLAYER_ID) {
           setIsBottleTurn(true)
@@ -186,17 +175,11 @@ const App = () => {
         })
         setUIDisabled(false)
         clearInterval(interval)
-        if (debugTimeInterval) {
-          log(`clearInterval interval ${rollInterval}`)
-        }
       }
 
       steps++
     }, constants.STEPS_TIME_INTERVAL)
     setRollInterval(interval)
-    if (debugTimeInterval) {
-      log(`created a new setInterval ${rollInterval}`)
-    }
 
     // return interval to be used in useEffect's cleanup and prevent stalled imeIntervals
     return interval
