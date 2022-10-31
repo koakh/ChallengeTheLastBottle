@@ -13,9 +13,9 @@ const App = () => {
   // hooks
   const [state, dispatch] = useStateValue()
   const [uiDisabled, setUIDisabled] = useState(false)
-  const [isBootleTurn, setIsBottleTurn] = useState(false)
+  const firstTurnInterval = useRef()
   const rollInterval = useRef()
-  // helper to inspect render
+  // helper to inspect render, only used when debug is true
   const count = useRef(0)
 
   useEffect(() => {
@@ -24,14 +24,17 @@ const App = () => {
 
   // effects
   useEffect(() => {
-    if (state.gameStatus.running && isBootleTurn) {
+    if (
+      state.gameStatus.running &&
+      state.gameStatus.turn === constants.PLASTIC_BOTTLE_ID
+    ) {
       onClickRollDiceHandler()
-      setIsBottleTurn(false)
     }
     return () => {
+      clearInterval(firstTurnInterval)
       clearInterval(rollInterval)
     }
-  }, [state.gameStatus.running, isBootleTurn])
+  }, [state.gameStatus.running, state.gameStatus.turn])
 
   // eventHandlers
   const onClickStartGameHandler = () => {
@@ -39,9 +42,13 @@ const App = () => {
     dispatch({
       type: 'START_GAME'
     })
-    // give some time for bottle think its play and game state finish setup
-    setTimeout(() => {
-      setIsBottleTurn(true)
+    firstTurnInterval.current = setTimeout(() => {
+      dispatch({
+        type: 'FIRST_TURN',
+        payload: {
+          turn: constants.PLASTIC_BOTTLE_ID
+        }
+      })
     }, constants.BOTTLE_THINK_INTERVAL)
   }
 
@@ -104,9 +111,7 @@ const App = () => {
         })
         clearInterval(interval)
         // pass turn to bottle
-        if (state.gameStatus.turn === constants.PLAYER_ID) {
-          setIsBottleTurn(true)
-        } else {
+        if (state.gameStatus.turn !== constants.PLAYER_ID) {
           setUIDisabled(false)
         }
       }

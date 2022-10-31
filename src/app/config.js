@@ -22,8 +22,8 @@ export const constants = {
     ['W', 'E'],
     ['NW', 'SE']
   ],
-  STEPS_TIME_INTERVAL: 500,
-  BOTTLE_THINK_INTERVAL: 1000,
+  STEPS_TIME_INTERVAL: 250,
+  BOTTLE_THINK_INTERVAL: 250,
   COLORS: {
     gpgpArea: '#dd4444',
     pzArea: '#44aa66',

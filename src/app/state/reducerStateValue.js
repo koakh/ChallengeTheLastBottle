@@ -40,6 +40,14 @@ export default (state, action) => {
           state.gameStatus.rows
         )
       }
+    case 'FIRST_TURN':
+      return {
+        ...state,
+        gameStatus: {
+          ...state.gameStatus,
+          ...action.payload
+        }
+      }
     case 'STOP_GAME':
       return {
         ...state,

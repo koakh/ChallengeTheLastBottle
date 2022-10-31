@@ -33,6 +33,8 @@ export const generateGameData = (columns, rows) => {
   return {
     running: true,
     winner: undefined,
+    // start undefined, we need to generate game data first, and fire FIRST_TURN after to prevent first round side effects
+    turn: undefined,
     startingPosition: playerPosition,
     playerStatus: {
       position: playerPosition
@@ -40,14 +42,11 @@ export const generateGameData = (columns, rows) => {
     bottleStatus: {
       position: bottlePosition
     },
-    turn: constants.PLASTIC_BOTTLE_ID,
     directionStatus: constants.DIRECTIONS[0],
     rounds: [],
     rows: 0,
     columns: 0,
     gpgpCenterPosition,
-    // gpgpArea,
-    // pzArea,
     gpgpAreaArray,
     pzAreaArray
   }
@@ -92,7 +91,6 @@ export const getAreaArray = (area, columns, rows) => {
       areaArray.push([finalRow, finalCol])
     }
   }
-
   return areaArray
 }
 
