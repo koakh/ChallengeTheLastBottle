@@ -1,5 +1,5 @@
 export const constants = {
-  DEBUG: true,
+  DEBUG: false,
   SHOW_GRID_POSITION: false,
   USE_RANDOM_COLORS: false,
   MIN_GRID_SIZE: [10, 10],

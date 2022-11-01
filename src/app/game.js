@@ -1,4 +1,9 @@
-import { log, arrayIsInArray, randomPosition } from '../utils/main'
+import {
+  log,
+  arrayIsInArray,
+  randomPosition,
+  randomNumber
+} from '../utils/main'
 
 import { constants } from './config'
 
@@ -217,4 +222,152 @@ export const getMoveStepPositions = (
 
   if (debug) log(`nextPosition: [${nextPosition}]`)
   return nextPosition
+}
+
+// onClickRollDiceHandler helpers
+
+export const rollDice = (state, dispatch, setUIDisabled, rollInterval) => {
+  const debug = false
+  setUIDisabled(true)
+
+  const roleDirectionStatus = randomNumber(1, 6)
+  const roleStepsStatus = randomNumber(1, 6)
+  const directionStatus = getDirection(
+    state,
+    state.gameStatus.directionStatus,
+    roleDirectionStatus,
+    roleStepsStatus
+  )
+  if (debug) {
+    log(
+      `roleDirectionStatus: ${roleDirectionStatus}, roleStepsStatus: ${roleStepsStatus}, directionStatus: ${directionStatus}`
+    )
+  }
+
+  // start rolling
+  dispatch({
+    type: 'ROLL_DICE',
+    payload: {
+      directionStatus,
+      roleDirectionStatus,
+      roleStepsStatus
+    }
+  })
+
+  let moveTo
+  let dispatchType
+  if (state.gameStatus.turn === constants.PLAYER_ID) {
+    moveTo = state.gameStatus.playerStatus.position
+    dispatchType = 'MOVE_PLAYER'
+  } else {
+    moveTo = state.gameStatus.bottleStatus.position
+    dispatchType = 'MOVE_BOTTLE'
+  }
+
+  // move steps
+  let steps = 0
+  const interval = setInterval(() => {
+    if (debug) {
+      log(`steps:${steps} === roleStepsStatus:${roleStepsStatus}`)
+    }
+    if (steps === roleStepsStatus - 1) {
+      dispatch({
+        type: 'CHANGE_TURN',
+        payload: {
+          directionStatus,
+          roleDirectionStatus,
+          roleStepsStatus
+        }
+      })
+      clearInterval(interval)
+      // pass turn to bottle
+      if (state.gameStatus.turn !== constants.PLAYER_ID) {
+        setUIDisabled(false)
+      }
+    }
+
+    // used as next position
+    moveTo = getMoveStepPositions(
+      moveTo,
+      directionStatus,
+      roleStepsStatus,
+      state.gameStatus.columns,
+      state.gameStatus.rows
+    )
+
+    // dispatch moveTo
+    dispatch({
+      type: dispatchType,
+      payload: {
+        position: moveTo
+      }
+    })
+
+    // check if any player wins
+    checkEndGame(state, dispatch, moveTo, setUIDisabled, interval)
+
+    steps++
+  }, constants.STEPS_TIME_INTERVAL)
+  rollInterval.current = interval
+}
+
+const checkEndGame = (state, dispatch, moveTo, setUIDisabled, interval) => {
+  const debug = false
+  // check player positions to define end of game
+  let gameStop = false
+  let winner
+
+  if (state.gameStatus.turn === constants.PLAYER_ID) {
+    const playerIsInGpgpArea = arrayIsInArray(
+      state.gameStatus.gpgpAreaArray,
+      moveTo
+    )
+    const playerIsOnTopOfBottle =
+      moveTo[0] === state.gameStatus.bottleStatus.position[0] &&
+      moveTo[1] === state.gameStatus.bottleStatus.position[1]
+    if (debug)
+      log(
+        `playerIsInGpgpArea: ${playerIsInGpgpArea}, playerIsOnTopOfBottle: ${playerIsOnTopOfBottle}`
+      )
+    if (playerIsInGpgpArea || playerIsOnTopOfBottle) {
+      gameStop = true
+      winner = constants.PLAYER_ID
+    }
+  } else {
+    const bottleIsInGpgpArea = arrayIsInArray(
+      state.gameStatus.gpgpAreaArray,
+      moveTo
+    )
+    const bootleIsOnTopOfPlayer =
+      moveTo[0] === state.gameStatus.playerStatus.position[0] &&
+      moveTo[1] === state.gameStatus.playerStatus.position[1]
+
+    if (debug) {
+      log(
+        `bottleIsInGpgpArea: ${bottleIsInGpgpArea}, bootleIsOnTopOfPlayer: ${bootleIsOnTopOfPlayer}`
+      )
+    }
+
+    if (bottleIsInGpgpArea) {
+      gameStop = true
+      winner = constants.PLASTIC_BOTTLE_ID
+    }
+
+    // player is a lucky one, bottle comes to it hands
+    if (bootleIsOnTopOfPlayer) {
+      gameStop = true
+      winner = constants.PLAYER_ID
+    }
+  }
+
+  if (gameStop) {
+    dispatch({
+      type: 'END_GAME',
+      payload: {
+        winner
+      }
+    })
+    setUIDisabled(false)
+    clearInterval(interval)
+  }
 }
