@@ -1,0 +1,14 @@
+.row {
+  text-align: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row > div {
+  display: block;
+  min-width: 30px;
+  min-height: 30px;
+  text-align: center;
+  font-size: 0.6em;
+}

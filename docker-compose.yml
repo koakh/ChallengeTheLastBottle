@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  koakh-the-last-bottle:
+    image: koakh-the-last-bottle
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'

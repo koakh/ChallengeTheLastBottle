@@ -1,0 +1,68 @@
+html,body {
+  height:100%;
+  width: 100%;
+}
+
+#root {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.toolbar {  
+  margin: auto;
+  display: flex;
+  /* justify-content: center; */
+  height: 50px;
+  font-size: 0.75em;
+  color: black;
+  min-width: 800px;
+  max-width: 800px;
+  border: 1px solid #363636;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.gameTitle {
+  font-size: 1.5em;
+  color: white;
+  margin: 10px;
+}
+
+.button {
+  will-change: filter;
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin-right: 10px;
+  height: 50px;
+  color: black;
+  min-width: 80px;
+  /* background-color: #adadad; */
+  background-image: linear-gradient(rgb(180,180,220), rgb(220,220,255));
+  /* background-image: linear-gradient(rgb(120,120,220), rgb(180,180,255)); */
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+}
+
+.button:disabled {
+  background-image: linear-gradient(rgb(100,100,120), rgb(160,160,180));
+}
+
+.button:hover {
+  filter: drop-shadow(0 0 0.2em white);  
+}
+
+.button.react:hover {
+  filter: drop-shadow(0 0 0.2em white);
+}
+
+.gameStatus {
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+  border: 1px solid grey;
+  background-image: linear-gradient(rgb(180,180,220), rgb(220,220,255));
+}

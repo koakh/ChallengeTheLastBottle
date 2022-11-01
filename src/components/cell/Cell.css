@@ -1,0 +1,14 @@
+.cell {
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.cell > div {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.thing {
+  height: 28px;
+}

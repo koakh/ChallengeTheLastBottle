@@ -1,0 +1,156 @@
+import { useEffect, useState, useRef } from 'react'
+
+import './App.css'
+import { constants } from './app/config'
+import { rollDice } from './app/game'
+import { useStateValue } from './app/state/useStateValue'
+import Dice from './components/dice/Dice'
+import Grid from './components/grid/Grid'
+import Legend from './components/legend/Legend'
+
+const App = () => {
+  // hooks
+  const [state, dispatch] = useStateValue()
+  const [uiDisabled, setUIDisabled] = useState(false)
+  const firstTurnInterval = useRef()
+  const rollInterval = useRef()
+  // helper to inspect render, only used when debug is true
+  const count = useRef(0)
+
+  useEffect(() => {
+    count.current = count.current + 1
+  })
+
+  // effects
+  useEffect(() => {
+    if (
+      state.gameStatus.running &&
+      state.gameStatus.turn === constants.PLASTIC_BOTTLE_ID
+    ) {
+      onClickRollDiceHandler()
+    }
+    return () => {
+      clearInterval(firstTurnInterval)
+      clearInterval(rollInterval)
+    }
+  }, [state.gameStatus.running, state.gameStatus.turn])
+
+  // eventHandlers
+  const onClickStartGameHandler = () => {
+    setUIDisabled(true)
+    dispatch({
+      type: 'START_GAME'
+    })
+    firstTurnInterval.current = setTimeout(() => {
+      dispatch({
+        type: 'FIRST_TURN',
+        payload: {
+          turn: constants.PLASTIC_BOTTLE_ID
+        }
+      })
+    }, constants.BOTTLE_THINK_INTERVAL)
+  }
+
+  const onClickStopGameHandler = () =>
+    dispatch({
+      type: 'STOP_GAME'
+    })
+
+  const onClickRollDiceHandler = () => {
+    rollDice(state, dispatch, setUIDisabled, rollInterval)
+  }
+
+  // debug helper
+  const stateOutput = JSON.stringify(
+    {
+      ...state.gameStatus,
+      gpgpAreaArray: undefined,
+      pzAreaArray: undefined
+    },
+    undefined,
+    2
+  )
+  let roundNo = 1
+  let turnPosition
+  if (state.gameStatus.running && constants.DEBUG) {
+    if (state.gameStatus.rounds.length > 0) {
+      roundNo = state.gameStatus.rounds.length + 1
+    }
+    const turnKey =
+      state.gameStatus.turn === constants.PLASTIC_BOTTLE_ID
+        ? 'bottleStatus'
+        : 'playerStatus'
+    turnPosition = ` : C${state.gameStatus[turnKey].position[0] + 1}:R${state
+      .gameStatus[turnKey].position[1] + 1} / ${
+      state.gameStatus[turnKey].position[0]
+    }
+          :${state.gameStatus[turnKey].position[1]}`
+  }
+
+  return (
+    <div className='App'>
+      <div className='gameTitle'>{constants.I18N.gameName}</div>
+      <div className='toolbar'>
+        {state.gameStatus.running ? (
+          <>
+            <button
+              className='button'
+              disabled={uiDisabled}
+              onClick={onClickStopGameHandler}
+            >
+              {constants.I18N.stopGame}
+            </button>
+            <Dice
+              direction={state.gameStatus.directionStatus[0]}
+              label={constants.I18N.direction}
+              value={state.gameStatus.roleDirectionStatus}
+            />
+            <Dice
+              label={constants.I18N.steps}
+              value={state.gameStatus.roleStepsStatus}
+            />
+            <button
+              className='button'
+              disabled={uiDisabled}
+              onClick={onClickRollDiceHandler}
+            >
+              {constants.I18N.rollDice}
+            </button>
+            <div className='gameStatus'>
+              {constants.I18N.turn} #{roundNo} : {state.gameStatus.turn}:{' '}
+              {constants.I18N.currentPosition} {turnPosition}
+            </div>
+          </>
+        ) : (
+          <>
+            <button
+              className='button'
+              disabled={uiDisabled}
+              onClick={onClickStartGameHandler}
+            >
+              {constants.I18N.startGame}
+            </button>
+            {state.gameStatus.winner && (
+              <div className='gameStatus'>
+                {constants.I18N.winner} : {state.gameStatus.winner}:{' '}
+                {constants.I18N.inXRounds.replace(
+                  '%ROUNDS%',
+                  state.gameStatus.rounds.length
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <Grid />
+      <Legend />
+      {constants.DEBUG && (
+        <pre>
+          render Count: {count.current}, state: {stateOutput}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+export default App
